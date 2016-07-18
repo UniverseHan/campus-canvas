@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="ko">
+	<head>
+		<meta charset="UTF-8" />
+		<meta name="viewport" content="width=device-width, height=device-height, initial-scale=1.0; maximum-scale=1.0; minimum-scale=1.0; user-scalable=no;" /> 
+		<title>이미지 출력 예제</title>
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/2.1.1/jquery.min.js"></script>
+		<script src="js/FrameCounter.js"></script>
+		<script src="js/InputSystem.js"></script>
+		<script src="js/SoundManager.js"></script>
+		<script src="js/graphics/GraphicObject.js"></script>
+		<script src="js/graphics/SpriteAnimation.js"></script>
+		<script src="js/SpriteTestScene.js"></script>
+		<script src="js/net/socket.js"></script>
+		<script src="js/Joystick.js"></script>
+		<script src="js/ChatControl.js"></script>
+		<script src="js/GameFramework.js"></script>
+		<script src="js/AI/FindThePlayer.js"></script>
+		<script src="js/AI/FollowAndChat.js"></script>
+		<style>
+			html, body {
+				overflow: hidden;
+				position: relative;
+				width:  100%;
+				height: 100%;
+				margin: 0px;
+			}
+		</style>
+	</head>
+	<body width="800">
+		<canvas id="GameCanvas" 
+			style="position: fixed; top: 0px; left: 0px; " width="100%" height="650">
+			HTML Canvas를 지원하지 않습니다.
+		</canvas>
+	</body>
+
+</html>
