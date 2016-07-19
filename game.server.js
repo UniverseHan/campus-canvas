@@ -13,7 +13,7 @@ server.listen( 9892, function()
 	console.log("RunnerGame Server Start port:9892");
 });
 //localhost/port번호로 GameFramework.html에 접근 가능하게 해줌
-app.get('/', function(req,res){
+app.get('/chat', function(req,res){
 	res.sendfile(__dirname + '/Client/GameFramework.html');
 });
 // /Client의 Static 파일들에 대한 접근을 가능케 함

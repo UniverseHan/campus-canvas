@@ -9,8 +9,8 @@ window.addEventListener("mousemove", onMouseMove, false);
 window.addEventListener("mouseup", onMouseUp, false);
 
 //var Server = "http://220.149.235.222";
-var Server = "http://222.106.5.225";
-// var Server = "http://localhost";
+// var Server = "http://222.106.5.225";
+var Server = "http://localhost";
 var Port = "9892";
 var AddrSocket = Server + ':' + Port;
 

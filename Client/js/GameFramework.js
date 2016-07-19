@@ -52,7 +52,7 @@ function Render()
 
 function diaplayBackground(context)
 {
-	context.fillStyle = "#000000";
+	context.fillStyle = "#3c3f41";
 	context.fillRect(0, 0, screenWidth, screenHeight);
 }
 
