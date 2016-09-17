@@ -10,8 +10,8 @@ window.addEventListener("mouseup", onMouseUp, false);
 
 //var Server = "http://220.149.235.222";
 // var Server = "http://222.106.5.225";
-var Server = "http://125.131.175.47";
-var Port = "7070";
+var Server = "http://localhost";
+var Port = "9892";
 var AddrSocket = Server + ':' + Port;
 
 function SpriteTestScene()
@@ -115,6 +115,7 @@ SpriteTestScene.prototype.Render = function()
 
 SpriteTestScene.prototype.RenderUI = function(context)
 {
+	context.strokeRect(screenWidth/2,screenHeight/2,30,30);
 	joystick.render(context);
 };
 
