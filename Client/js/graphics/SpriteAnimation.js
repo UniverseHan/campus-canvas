@@ -118,7 +118,7 @@ SpriteAnimation.prototype.RenderChatQuote = function (context)
 SpriteAnimation.prototype.speak = function(msg)
 {
 	this.isSpeaking = true;
-	this.wordsToSpeak = msg;
+	this.wordsToSpeak = 'nickname : ' + msg;
 	this.remainTimeInSeconds = this.releaseTimeInSeconds;
 };
 
