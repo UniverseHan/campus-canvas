@@ -20,5 +20,15 @@ var Port = "9892";
 node game.server.js
 ```
 
-## 웹 프라우저에서 서버 설정해놓은 서버 주소로 접속
+## Server on Raspberry Pi
+* ip : http://121.138.100.130/
+* port : 22
+* id : pi
+* pass : raspberry
+
+```bash
+ssh pi@121.138.100.130
+```
+
+
 
