@@ -30,5 +30,25 @@ node game.server.js
 ssh pi@121.138.100.130
 ```
 
+## 라즈베리 파이 서버에서 게임 서버 구동하기
+라즈베리 파이에서 서버를 실행 했다고 해도 ssh 터미널 창을 닫으면 게임 서버가 종료되는 문제가 있다. forever 라는 모듈을 사용해서 게임 서버를 대몬으로 실행 할 수가 있다.
+
+### install forever
+```bash
+npm install -g forever
+```
+
+### 게임 서버 실행하기
+```bash
+cd canpus-canvas
+forever start game.server.js
+```
+
+### 파이에서 서버가 구동되고 있는지 확인하기
+```bash
+forever list
+```
+
+
 
 
