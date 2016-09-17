@@ -115,6 +115,8 @@ SpriteTestScene.prototype.Render = function()
 
 SpriteTestScene.prototype.RenderUI = function(context)
 {
+	context.fillStyle = "#ff0000";
+	context.strokeRect(200,200,50,50);
 	joystick.render(context);
 };
 
