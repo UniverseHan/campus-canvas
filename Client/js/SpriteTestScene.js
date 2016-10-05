@@ -10,8 +10,8 @@ window.addEventListener("mouseup", onMouseUp, false);
 
 //var Server = "http://220.149.235.222";
 // var Server = "http://222.106.5.225";
-var Server = "http://125.131.175.47";
-var Port = "7070";
+var Server = "http://localhost";
+var Port = "9892";
 var AddrSocket = Server + ':' + Port;
 
 function SpriteTestScene()
@@ -24,38 +24,44 @@ function SpriteTestScene()
 	//npc
 	this.spriteImg2 = new Image();
 	this.spriteImg2.src = "./image/npc.png";
-	
+
 	this.spriteObject = new SpriteAnimation( this.spriteImg, 50, 110, 3, 3);
-	
+
 	var backgroundImg = new Image();
 	backgroundImg.src = "./image/finalmap.jpg";
 	this.backgroundObject = new GraphicObject(backgroundImg);
-	
+
 	new Socket(AddrSocket);
 	this.others = new Array();
 	this.others.push( this.spriteObject);
-	
+
 	this.userIsTyping = true;
-	
+
 	gfwSocket.onInit(onSocketInit);
-	
+
+	//messageHistory
+	this.messageHistory = new Array();
+
 	var chatControl = new ChatControl();
-	
+
 	this.chatBar = document.createElement("input");
 	this.chatBar.id = "chatBar";
 	document.body.appendChild(this.chatBar);
-	
+
+  var historyButton = new HistoryButton();
+  document.getElementById("historyButton").addEventListener('click', onHistoryButtonClicked);
+
 	var canvasX = 0;
-	var canvasY = 0;	
-	
+	var canvasY = 0;
+
 	// Joy Stick
 	var joystick = new Joystick();
 	this.joysticBottomGap = 50;
-	
-	
+
+
 	//this -> player
 	this.currentAI = null;
-	
+
 	//save the newest Player data
 	this.newPlayer = null;
 
@@ -82,36 +88,36 @@ function SpriteTestScene()
 			this.spriteObject.changeImg(this.spriteImg);
 		}
 	};
-	
+
 SpriteTestScene.prototype.Render = function()
 {
 	var theCanvas = document.getElementById("GameCanvas");
 	var context = theCanvas.getContext("2d");
-	
+
 	context.save();
-	
+
 		var	offsetX = (this.spriteObject.x - screenWidth/2);
 		var offsetY = (this.spriteObject.y - screenHeight/2);
-		
+
 		if( offsetX < 0 )
 			offsetX = 0;
 		if(offsetY < 0)
 			offsetY = 0;
-		
+
 		if(offsetX > (791 - screenWidth))
 			offsetX = (791 - screenWidth);
-		
+
 		if(offsetY > (650 - screenHeight))
 			offsetY = (650 - screenHeight);
-	
+
 		context.translate( -offsetX, -offsetY );
-		this.backgroundObject.Render(context);	
+		this.backgroundObject.Render(context);
 		this.RenderPlayers(context);
 	context.restore();
-		
-	
+
+
 	this.RenderUI(context);
-};	
+};
 
 SpriteTestScene.prototype.RenderUI = function(context)
 {
@@ -132,24 +138,27 @@ SpriteTestScene.prototype.Update = function()
 
 SpriteTestScene.prototype.updateUI = function()
 {
-	// Rearrange Joystic  
-	joystick.y = screenHeight 
-		- joystick.radius 
+	// Rearrange Joystic
+	joystick.y = screenHeight
+		- joystick.radius
 		- this.joysticBottomGap;
-	
+
 	// Update ChatControl
-	chatControl.setWidth( screenWidth );
+	chatControl.setWidth( screenWidth - 100);
 	chatControl.moveTo(0 , screenHeight - chatControl.getHeight()-8);
-	
+
+	// Update HistoryButton
+	historyButton.moveTo( $('#chatBar').width() , screenHeight - chatControl.getHeight()-8);
+
 	// Fix Scroll
 	 window.scrollTo(0, 0);
 	 document.body.scrollTop = 0;
 	 viewport = document.querySelector("meta[name=viewport]");
-    viewport.setAttribute('content', 'height=auto');
+   viewport.setAttribute('content', 'height=auto');
 };
 
 SpriteTestScene.prototype.onTouch = function(x, y)
-{	
+{
 	if( joystick.touchedBy(x, y ) )
 	{
 		joystick.touch(x, y);
@@ -160,7 +169,7 @@ SpriteTestScene.prototype.processInput = function(inputSystem)
 {
 	if(this.aiUsed === true)
 		return;
-	
+
 	//이렇게 change
 	//  ||
 	// \||/
@@ -173,9 +182,9 @@ SpriteTestScene.prototype.processInput = function(inputSystem)
 	var DIR_RIGHT = 2;
 	var DIR_DOWN = 0;
 	var DIR_UP = 3;
-	
+
 	var direction = this.spriteObject.state;
-	if(inputSystem.isKeyDown( 37 ) )	
+	if(inputSystem.isKeyDown( 37 ) )
 	{
 		dx -= 5;
 		direction = DIR_LEFT;
@@ -195,21 +204,21 @@ SpriteTestScene.prototype.processInput = function(inputSystem)
 		dy += 5;
 		direction = DIR_DOWN;
 	}
-	
+
 	if( joystick.isControlling )
 	{
 		var dir = joystick.getHandleDir();
 		this.moveCharacter( dir.dx, dir.dy, dir.dir);
 	}
 	else {
-		this.moveCharacter( dx, dy, direction);	
+		this.moveCharacter( dx, dy, direction);
 	}
 };
 
 SpriteTestScene.prototype.onMouseMove = function(x, y, e)
 {
-	if( joystick.isControlling ) 
-	{		
+	if( joystick.isControlling )
+	{
 		joystick.moveControl(x, y);
 		e.preventDefault();
 	}
@@ -236,7 +245,7 @@ SpriteTestScene.prototype.onKeyDown = function(e)
 			chatControl.getChatObject().val("");
 		}
 		//gameState.userIsTyping  = !gameState.userIsTyping;
-		
+
 		// process screen
 		//chatControl.getChatObject().toggle();
 		if( this.userIsTyping )
@@ -250,7 +259,7 @@ SpriteTestScene.prototype.onKeyDown = function(e)
 }
 function onSocketInit()
 {
-	gfwSocket.On("join_newStudent", function(data) 
+	gfwSocket.On("join_newStudent", function(data)
 	{
 		var otherPlayer = new SpriteAnimation( gameState.spriteImg, 50, 110, 3, 3);
 		otherPlayer.id = data.id;
@@ -268,12 +277,12 @@ function onSocketInit()
 		//gameState.currentAI.setNewPlayerData(gameState.newPlayer);
 		gameState.others.push( otherPlayer );
 	});
-	
-	gfwSocket.On("move_to", function(data) 
+
+	gfwSocket.On("move_to", function(data)
 	{
 		gameState.otherPlayerMove(data.id, data.dx, data.dy, data.dir);
 	});
-	
+
 	gfwSocket.On("other_players", function(data)
 	{
 		for(var i in data)
@@ -285,8 +294,8 @@ function onSocketInit()
 			gameState.others.push( otherPlayer );
 		}
 	});
-	
-	gfwSocket.On("other_has_leaved", function(data) 
+
+	gfwSocket.On("other_has_leaved", function(data)
 	{
 		gameState.otherPlayerLeave(data);
 		if ( gameState.others.length > 1)
@@ -298,19 +307,25 @@ function onSocketInit()
 			gameState.currentAI = new FindThePlayer(gameState);
 		}
 	});
-	
+
 	gfwSocket.On("speak", function(data) {
+		//여기에서 history저장
+		storeMessage(data.id.replace("/#", ""), data.msg);
 		gameState.otherPlayerSpeak(data.id, data.msg);
 	});
-	
-	gfwSocket.Emit("join_room", 
+
+	gfwSocket.Emit("join_room",
 			{ x : gameState.spriteObject.x
 			, y : gameState.spriteObject.y});
 }
 
+function storeMessage(id, msg){
+	gameState.messageHistory.push(id + " :  " + msg + "\n");
+}
+
 function onTouchStart(e)
 {
-	gameState.onTouch( 
+	gameState.onTouch(
 		e.changedTouches[0].clientX,
 		e.changedTouches[0].clientY);
 	//e.preventDefault();
@@ -318,18 +333,18 @@ function onTouchStart(e)
 
 function onMouseDown(e)
 {
-	gameState.onTouch( 
+	gameState.onTouch(
 		e.clientX,
 		e.clientY);
 	// e.preventDefault();
 }
 
 function onTouchMove(e)
-{	
-	gameState.onMouseMove( 
-		e.changedTouches[0].clientX, 
+{
+	gameState.onMouseMove(
+		e.changedTouches[0].clientX,
 		e.changedTouches[0].clientY
-		, e);	
+		, e);
 	// e.preventDefault();
 }
 
@@ -341,13 +356,13 @@ function onMouseMove(e)
 
 function onMouseUp(e)
 {
-	gameState.onTouchEnd( e.clientX, e.clientY);	
+	gameState.onTouchEnd( e.clientX, e.clientY);
  	//e.preventDefault();
 }
 function onTouchEnd(e)
 {
-	gameState.onTouchEnd( 
-		e.changedTouches[0].clientX, 
+	gameState.onTouchEnd(
+		e.changedTouches[0].clientX,
 		e.changedTouches[0].clientY);
 	// e.preventDefault();
 }
@@ -367,7 +382,7 @@ SpriteTestScene.prototype.RenderPlayers = function(context)
 {
 	var sprites = this.others.slice();
 	sprites.sort(comparePositionY);
-	
+
 	for(var i in sprites)
 	{
 		var other = sprites[i];
@@ -387,7 +402,7 @@ SpriteTestScene.prototype.moveCharacter = function(dx, dy, direction)
 
 SpriteTestScene.prototype.updatePlayers = function()
 {
-	for(var i in this.others)	
+	for(var i in this.others)
 	{
 		var other = this.others[i];
 		other.Update();
@@ -437,14 +452,15 @@ SpriteTestScene.prototype.otherPlayerSpeak = function(id, msg)
 SpriteTestScene.prototype.enterChat = function(msg)
 {
 	this.spriteObject.speak(msg);
+	storeMessage( gfwSocket.socket.id, msg);
 	gfwSocket.Emit("speak_to_all", { msg : msg});
 };
 
 SpriteTestScene.prototype.otherPlayerLeave = function(id)
-{	
+{
 	for(var i in this.others)
 	{
-		if( this.others[i].id == id) 
+		if( this.others[i].id == id)
 		{
 			this.others.splice(i, 1);
 			break;
@@ -464,3 +480,6 @@ Camera.prototype.translate = function(dx, dy)
 	this.y += dy;
 };
 
+function onHistoryButtonClicked( e ){
+	alert(gameState.messageHistory);
+}

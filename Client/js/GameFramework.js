@@ -15,12 +15,12 @@ function onPageLoadComplete()
 
 	screenWidth = $("#GameCanvas").width();
 	screenHeight = $("#GameCanvas").height();
-	
+
 	gameState = new SpriteTestScene();
 	setInterval(gameLoop, 1000/ FPS);
-	
+
 	$("#playerControlmodeToggleButton").click( function() {
-		gameState.toggleAiMode(); 
+		gameState.toggleAiMode();
 	});
 }
 
@@ -38,17 +38,18 @@ function Render()
 {
 	var theCanvas = document.getElementById("GameCanvas");
 	var context = theCanvas.getContext("2d");
-	
+
 	context.canvas.width  = window.innerWidth;
-  	context.canvas.height = window.innerHeight;
-  	
+  context.canvas.height = window.innerHeight;
+
 	screenWidth = context.canvas.width;
 	screenHeight = context.canvas.height;
-	
+
 	diaplayBackground(context);
 	gameState.Render(context);
 	displayFrame(context);
 }
+
 
 function diaplayBackground(context)
 {
