@@ -1,7 +1,12 @@
 # Open Source Campus Community campus-canvas
 Campus Canvas의 오픈 소스 리파지 토리 입니다.
 
-# 서버 실행하기
+## Index
+1. Getting Started
+2. Dev Guide
+3. Features
+
+# Getting Started
 ## 의존 모듈 인스톨
 ```bash
 npm install
