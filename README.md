@@ -3,7 +3,7 @@ Campus Canvas의 오픈 소스 리파지 토리 입니다.
 
 ## Index
 1. Getting Started
-2. [[Dev Guide|Dev Guide]]
+2. [Development Guide](https://github.com/UniverseHan/campus-canvas/wiki/Guide)
 3. Features
 
 # Getting Started
