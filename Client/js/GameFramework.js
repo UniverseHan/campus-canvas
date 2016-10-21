@@ -8,6 +8,21 @@ var gameState;
 var screenWidth = 320;
 var screenHeight = 480;
 
+var username = "DEFAULT";
+
+function extendJqueryToGetUrlParam()
+{
+		$.urlParam = function(name){
+			var results = new RegExp('[\?&]' + name + '=([^&#]*)').exec(window.location.href);
+			if (results==null){
+			 	return null;
+			}
+			else{
+			 	return results[1] || 0;
+			}
+	};
+}
+
 function onPageLoadComplete()
 {
 	var FPS = 30;
@@ -15,13 +30,17 @@ function onPageLoadComplete()
 
 	screenWidth = $("#GameCanvas").width();
 	screenHeight = $("#GameCanvas").height();
-	
+
 	gameState = new SpriteTestScene();
 	setInterval(gameLoop, 1000/ FPS);
-	
+
 	$("#playerControlmodeToggleButton").click( function() {
-		gameState.toggleAiMode(); 
+		gameState.toggleAiMode();
 	});
+
+	//Set the global username from URL parameter
+	extendJqueryToGetUrlParam();
+	username = $.urlParam("username");
 }
 
 function TestSoundSystem()
@@ -38,13 +57,13 @@ function Render()
 {
 	var theCanvas = document.getElementById("GameCanvas");
 	var context = theCanvas.getContext("2d");
-	
+
 	context.canvas.width  = window.innerWidth;
   	context.canvas.height = window.innerHeight;
-  	
+
 	screenWidth = context.canvas.width;
 	screenHeight = context.canvas.height;
-	
+
 	diaplayBackground(context);
 	gameState.Render(context);
 	displayFrame(context);

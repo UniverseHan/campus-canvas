@@ -1,7 +1,25 @@
-{  
-"dependencies":
-  {
+{
+  "dependencies": {
+    "body-parser": "^1.15.2",
     "express": "*",
-	"socket.io": "*"
-  }
-}	
+    "multer": "^1.2.0",
+    "socket.io": "*"
+  },
+  "name": "campus-canvas",
+  "description": "Campus Canvas의 오픈 소스 리파지 토리 입니다.",
+  "version": "1.0.0",
+  "main": "game.server.js",
+  "scripts": {
+    "test": "initialization"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/UniverseHan/campus-canvas.git"
+  },
+  "author": "GoFarther",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/UniverseHan/campus-canvas/issues"
+  },
+  "homepage": "https://github.com/UniverseHan/campus-canvas#readme"
+}
