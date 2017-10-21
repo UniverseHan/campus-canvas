@@ -10,8 +10,8 @@ window.addEventListener("mouseup", onMouseUp, false);
 
 //var Server = "http://220.149.235.222";
 // var Server = "http://222.106.5.225";
-var Server = "http://125.131.175.47";
-var Port = "7070";
+var Server = "http://210.121.160.82";
+var Port = "10003";
 var AddrSocket = Server + ':' + Port;
 
 function SpriteTestScene()
